@@ -1,5 +1,7 @@
 site_name: BetterAPI
 theme:
+  logo: images/Rikka.png
+  favicon: images/Rikka.png
   icon:
     repo: fontawesome/brands/github
   name: material
@@ -7,15 +9,11 @@ theme:
     scheme: slate
     primary: deep purple
     accent: deep purple
-    logo: images/Rikka.png
-    favicon: images/Rikka.png
-copyright: Почему нет?
+copyright: Made by Nonamegone
 repo_url: https://github.com/Nonamegone/betterapi
 repo_name: BetterAPI
 extra_css:
   - stylesheets/extra.css
-extra:
-  generator: false
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.inlinehilite
@@ -24,15 +22,17 @@ markdown_extensions:
       alternate_style: true 
   - pymdownx.snippets
   - tables
+  - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 nav: 
   - Introduction: index.md
-  - File System: fs.md
+  - File system: fs.md
   - Input: input.md
   - Draw: draw.md
-  - Source Engine: sengine.md
+  - Entity list: entlist.md
+  - Source engine: sengine.md
   - Memory: memory.md
   - Panorama: panorama.md
   - Misc: misc.md

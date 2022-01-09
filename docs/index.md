@@ -5,7 +5,7 @@
 [Legendware.pw](https://www.mkdocs.org)
 
 ## How to use?
-Example:
+Download to this directory `%appdata%/Legendware/scripts` or to `Steam/steamapps/common/Counter-Strike Global Offensive/lua` and run this code in your script:
     ```lua
     require('betterapi')
     print(misc.scriptname())

@@ -8,6 +8,9 @@
 | ------------- |
 | true or false |
 
+??? tip
+    You can see all keycodes [here](https://docs.microsoft.com/ru-ru/windows/win32/inputdev/virtual-key-codes)
+
 Example:
     ```lua
     client.add_callback('on_paint', function()

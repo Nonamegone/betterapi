@@ -28,7 +28,7 @@ Example:
 
 | Variable      | Type     |    Description     |
 | ------------- | -------- | ------------------ |
-| `t`        | `String` | Name of the module |
+| `t`        | `String` | C type to return |
 | `offset`        | `handle` | Handle of the module |  <!-- Заполнить таблицу нормально -->
 | `add`        | `int` | Prop offset |
 
@@ -51,7 +51,7 @@ Example:
 
 | Variable      | Type     |    Description     |
 | ------------- | -------- | ------------------ |
-| `t`        | `String` | Name of the module |
+| `t`        | `String` | C type to write |
 | `offset`        | `handle` | Handle of the module |  <!-- Заполнить таблицу нормально -->
 | `add`        | `int` | Prop offset |
 | `value`        | ??? | What you need to write |

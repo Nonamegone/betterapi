@@ -307,6 +307,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#entlistfind_by_classclass" class="md-nav__link">
+    entlist.find_by_class(class)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entlistget_player_resource" class="md-nav__link">
+    entlist.get_player_resource()
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -382,6 +396,54 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          Classes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Classes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/player/" class="md-nav__link">
+        Player
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     <li class="md-nav__item">
       <a href="../examples/" class="md-nav__link">
         Example
@@ -418,6 +480,20 @@
         <li class="md-nav__item">
   <a href="#entlistget_playersnum" class="md-nav__link">
     entlist.get_players(num)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entlistfind_by_classclass" class="md-nav__link">
+    entlist.find_by_class(class)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entlistget_player_resource" class="md-nav__link">
+    entlist.get_player_resource()
   </a>
   
 </li>
@@ -478,6 +554,56 @@ num = 2 - all players</p>
 <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">playerstable</span><span class="p">)</span> <span class="kr">do</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">get_health</span><span class="p">())</span>
 <span class="kr">end</span>
+</code></pre></div></p>
+<h2 id="entlistfind_by_classclass">entlist.find_by_class(class)</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class</code></td>
+<td><code>String</code></td>
+<td>Name of this class</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entity that have this class name</td>
+</tr>
+</tbody>
+</table>
+<p>Example:
+    <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">chicken</span> <span class="o">=</span> <span class="n">entlist</span><span class="p">.</span><span class="n">find_by_class</span><span class="p">(</span><span class="n">CChicken</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">chicken</span><span class="p">:</span><span class="n">get_prop_bool</span><span class="p">(</span><span class="s1">&#39;CChicken&#39;</span><span class="p">,</span> <span class="s1">&#39;m_jumpedThisFrame&#39;</span><span class="p">)))</span> <span class="c1">-- Maybe:D</span>
+</code></pre></div></p>
+<h2 id="entlistget_player_resource">entlist.get_player_resource()</h2>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CCSPlayerResource entity</td>
+</tr>
+</tbody>
+</table>
+<p>Example:
+    <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">CCSPlayerResource</span> <span class="o">=</span> <span class="n">entlist</span><span class="p">.</span><span class="n">get_player_resource</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">CCSPlayerResource</span><span class="p">:</span><span class="n">get_prop_int</span><span class="p">(</span><span class="s1">&#39;CCSPlayerResource&#39;</span><span class="p">,</span> <span class="s1">&#39;m_iPlayerC4&#39;</span><span class="p">)))</span> <span class="c1">-- Maybe:D</span>
 </code></pre></div></p>
                 
               

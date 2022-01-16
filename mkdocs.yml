@@ -38,4 +38,6 @@ nav:
   - Memory: memory.md
   - Panorama: panorama.md
   - Misc: misc.md
+  - Classes:
+    - Player: classes/player.md
   - Example: examples.md

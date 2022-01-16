@@ -41,22 +41,209 @@ ffi.cdef[[
 
     typedef void (__cdecl* chat_printf)(void*, int, int, const char*, ...);
 
+    typedef int(__fastcall* clantag_t)(const char*, const char*);
+
+    // HITBOXPOS START
+
+    typedef unsigned char byte;
+
+    typedef struct
+    {
+        float x,y,z;
+    } Vector;
+
+    typedef struct
+    {
+        int id;                     //0x0000
+        int version;                //0x0004
+        long    checksum;               //0x0008
+        char    szName[64];             //0x000C
+        int length;                 //0x004C
+        Vector  vecEyePos;              //0x0050
+        Vector  vecIllumPos;            //0x005C
+        Vector  vecHullMin;             //0x0068
+        Vector  vecHullMax;             //0x0074
+        Vector  vecBBMin;               //0x0080
+        Vector  vecBBMax;               //0x008C
+        int pad[5];
+        int numhitboxsets;          //0x00AC
+        int hitboxsetindex;         //0x00B0
+    } studiohdr_t;
+
+    typedef struct
+    {
+        void*   fnHandle;               //0x0000
+        char    szName[260];            //0x0004
+        int nLoadFlags;             //0x0108
+        int nServerCount;           //0x010C
+        int type;                   //0x0110
+        int flags;                  //0x0114
+        Vector  vecMins;                //0x0118
+        Vector  vecMaxs;                //0x0124
+        float   radius;                 //0x0130
+        char    pad[28];              //0x0134
+    } model_t;
+
+    typedef struct
+    {
+        int     m_bone;                 // 0x0000
+        int     m_group;                // 0x0004
+        Vector  m_mins;                 // 0x0008
+        Vector  m_maxs;                 // 0x0014
+        int     m_name_id;                // 0x0020
+        Vector  m_angle;                // 0x0024
+        float   m_radius;               // 0x0030
+        int        pad2[4];
+    } mstudiobbox_t;
+    
+    typedef struct
+    {
+        int sznameindex;
+    
+        int numhitboxes;
+        int hitboxindex;
+    } mstudiohitboxset_t;
+
+    typedef struct {
+        float m_flMatVal[3][4];
+    } matrix3x4_t;
+
+    typedef bool(__fastcall* cbaseanim_setupbones)(matrix3x4_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime);
+
+    // HITBOXPOS END
+
+    // PANORAMA START
+
+    // UIEngine
+    typedef void*(__thiscall* access_ui_engine_t)(void*, void); // 11
+    typedef bool(__thiscall* is_valid_panel_ptr_t)(void*, void*); // 36
+    typedef void*(__thiscall* get_last_target_panel_t)(void*); // 56
+    typedef int (__thiscall *run_script_t)(void*, void*, char const*, char const*, int, int, bool, bool); // 113
+
+    // IUIPanel
+    typedef const char*(__thiscall* get_panel_id_t)(void*, void); // 9
+    typedef void*(__thiscall* get_parent_t)(void*); // 25
+    typedef void*(__thiscall* set_visible_t)(void*, bool); // 27
+
+    // PANORAMA END
+
 ]]
 
-local function panoramalib()
-    local ffi = require("ffi")
-    ffi.cdef[[
-        // UIEngine
-        typedef void*(__thiscall* access_ui_engine_t)(void*, void); // 11
-        typedef bool(__thiscall* is_valid_panel_ptr_t)(void*, void*); // 36
-        typedef void*(__thiscall* get_last_target_panel_t)(void*); // 56
-        typedef int (__thiscall *run_script_t)(void*, void*, char const*, char const*, int, int, bool, bool); // 113
+--- MEMORY CDEF START
 
-        // IUIPanel
-        typedef const char*(__thiscall* get_panel_id_t)(void*, void); // 9
-        typedef void*(__thiscall* get_parent_t)(void*); // 25
-        typedef void*(__thiscall* set_visible_t)(void*, bool); // 27
-    ]]
+ffi.cdef[[
+	typedef void *PVOID;
+	typedef PVOID HANDLE;
+	typedef unsigned long DWORD;
+	typedef bool BOOL;
+	typedef unsigned long ULONG_PTR;
+	typedef long LONG;
+	typedef char CHAR;
+	typedef unsigned char BYTE;
+	typedef unsigned int SIZE_T;
+	typedef const void *LPCVOID;
+	typedef int *FARPROC;
+	typedef const char *LPCSTR;
+	typedef uint16_t *UINT;
+
+	typedef struct tagPROCESSENTRY32 {
+		DWORD     dwSize;
+		DWORD     cntUsage;
+		DWORD     th32ProcessID;
+		ULONG_PTR th32DefaultHeapID;
+		DWORD     th32ModuleID;
+		DWORD     cntThreads;
+		DWORD     th32ParentProcessID;
+		LONG      pcPriClassBase;
+		DWORD     dwFlags;
+		CHAR      szExeFile[260];
+	} PROCESSENTRY32;
+
+	typedef struct tagMODULEENTRY32 {
+		DWORD   dwSize;
+		DWORD   th32ModuleID;
+		DWORD   th32ProcessID;
+		DWORD   GlblcntUsage;
+		DWORD   ProccntUsage;
+		BYTE    *modBaseAddr;
+		DWORD   modBaseSize;
+		HANDLE hModule;
+		char    szModule[255 + 1];
+		char    szExePath[260];
+	} MODULEENTRY32;
+
+	HANDLE CreateToolhelp32Snapshot(
+		DWORD dwFlags,
+		DWORD th32ProcessID
+	);
+	
+	HANDLE OpenProcess(
+		DWORD dwDesiredAccess,
+		BOOL  bInheritHandle,
+		DWORD dwProcessId
+	);
+	
+	BOOL Process32Next(
+		HANDLE           hSnapshot,
+		PROCESSENTRY32 *lppe
+	);
+	
+	BOOL CloseHandle(
+		HANDLE hObject
+	);
+	
+	BOOL Process32First(
+		HANDLE           hSnapshot,
+		PROCESSENTRY32 *lppe
+	);
+	
+	BOOL Module32Next(
+		HANDLE          hSnapshot,
+		MODULEENTRY32 *lpme
+	);
+	
+	BOOL Module32First(
+		HANDLE          hSnapshot,
+		MODULEENTRY32 *lpme
+	);
+	
+	BOOL ReadProcessMemory(
+		HANDLE  hProcess,
+		LPCVOID lpBaseAddress,
+		PVOID  lpBuffer,
+		SIZE_T  nSize,
+		SIZE_T  *lpNumberOfBytesRead
+	);
+	
+	BOOL WriteProcessMemory(
+	  HANDLE  hProcess,
+	  LPCVOID  lpBaseAddress,
+	  PVOID lpBuffer,
+	  SIZE_T  nSize,
+	  SIZE_T  *lpNumberOfBytesWritten
+	);
+	
+	HANDLE GetModuleHandleA(
+		LPCSTR lpModuleName
+	);
+	
+	FARPROC GetProcAddress(
+		HANDLE hModule,
+		LPCSTR  lpProcName
+	);
+
+	BOOL TerminateProcess(
+  		HANDLE hProcess,
+  		UINT   uExitCode
+	);
+	
+	typedef void*(* Interface_t)(const char*, int*);
+	typedef PVOID(__thiscall* GetEntityHandle_t)(PVOID, unsigned long);
+]]
+
+--- MEMORY CDEF END
+
+local function panoramalib()
     local interface_ptr = ffi.typeof("void***")
     local rawpanoramaengine = utils.create_interface("panorama.dll", "PanoramaUIEngine001")
     local panoramaengine = ffi.cast(interface_ptr, rawpanoramaengine) -- void***
@@ -170,217 +357,104 @@ local function panoramalib()
 end
 
 local function memorylib()
-    ffi.cdef[[
-	    typedef void *PVOID;
-	    typedef PVOID HANDLE;
-	    typedef unsigned long DWORD;
-	    typedef bool BOOL;
-	    typedef unsigned long ULONG_PTR;
-	    typedef long LONG;
-	    typedef char CHAR;
-	    typedef unsigned char BYTE;
-	    typedef unsigned int SIZE_T;
-	    typedef const void *LPCVOID;
-	    typedef int *FARPROC;
-	    typedef const char *LPCSTR;
-	    typedef uint16_t *UINT;
-
-	    typedef struct tagPROCESSENTRY32 {
-	    	DWORD     dwSize;
-	    	DWORD     cntUsage;
-	    	DWORD     th32ProcessID;
-	    	ULONG_PTR th32DefaultHeapID;
-	    	DWORD     th32ModuleID;
-	    	DWORD     cntThreads;
-	    	DWORD     th32ParentProcessID;
-	    	LONG      pcPriClassBase;
-	    	DWORD     dwFlags;
-	    	CHAR      szExeFile[260];
-	    } PROCESSENTRY32;
-
-	    typedef struct tagMODULEENTRY32 {
-	    	DWORD   dwSize;
-	    	DWORD   th32ModuleID;
-	    	DWORD   th32ProcessID;
-	    	DWORD   GlblcntUsage;
-	    	DWORD   ProccntUsage;
-	    	BYTE    *modBaseAddr;
-	    	DWORD   modBaseSize;
-	    	HANDLE hModule;
-	    	char    szModule[255 + 1];
-	    	char    szExePath[260];
-	    } MODULEENTRY32;
-
-	    HANDLE CreateToolhelp32Snapshot(
-	    	DWORD dwFlags,
-	    	DWORD th32ProcessID
-	    );
-    
-	    HANDLE OpenProcess(
-	    	DWORD dwDesiredAccess,
-	    	BOOL  bInheritHandle,
-	    	DWORD dwProcessId
-	    );
-    
-	    BOOL Process32Next(
-	    	HANDLE           hSnapshot,
-	    	PROCESSENTRY32 *lppe
-	    );
-    
-	    BOOL CloseHandle(
-	    	HANDLE hObject
-	    );
-    
-	    BOOL Process32First(
-	    	HANDLE           hSnapshot,
-	    	PROCESSENTRY32 *lppe
-	    );
-    
-	    BOOL Module32Next(
-	    	HANDLE          hSnapshot,
-	    	MODULEENTRY32 *lpme
-	    );
-    
-	    BOOL Module32First(
-	    	HANDLE          hSnapshot,
-	    	MODULEENTRY32 *lpme
-	    );
-    
-	    BOOL ReadProcessMemory(
-	    	HANDLE  hProcess,
-	    	LPCVOID lpBaseAddress,
-	    	PVOID  lpBuffer,
-	    	SIZE_T  nSize,
-	    	SIZE_T  *lpNumberOfBytesRead
-	    );
-    
-	    BOOL WriteProcessMemory(
-	      HANDLE  hProcess,
-	      LPCVOID  lpBaseAddress,
-	      PVOID lpBuffer,
-	      SIZE_T  nSize,
-	      SIZE_T  *lpNumberOfBytesWritten
-	    );
-    
-	    HANDLE GetModuleHandleA(
-	    	LPCSTR lpModuleName
-	    );
-    
-	    FARPROC GetProcAddress(
-	    	HANDLE hModule,
-	    	LPCSTR  lpProcName
-	    );
-
-	    BOOL TerminateProcess(
-  	    	HANDLE hProcess,
-  	    	UINT   uExitCode
-	    );
-    
-	    typedef void*(* Interface_t)(const char*, int*);
-	    typedef PVOID(__thiscall* GetEntityHandle_t)(PVOID, unsigned long);
-    ]]
-
-    ------
-
     local variables = {
-    	dwPID = 0,
-    	hProcess = 0,
+        dwPID = 0,
+        hProcess = 0,
     }
-
-    ------
-
+    
+    
     proc = {}
-
+    
     proc.find_module = function(name)
-    	local hModule = ffi.C.CreateToolhelp32Snapshot(0x00000008, variables.dwPID)
-    	if hModule == -1 then return end
-    
-    	local mEntry = ffi.new("MODULEENTRY32")
-    	mEntry.dwSize = ffi.sizeof(mEntry)
-    
-    	mEntry = ffi.new("MODULEENTRY32 [1]", mEntry)
-    
-    	repeat
-    		if ffi.string(mEntry[0].szModule) == name then
-    			client.log(string.format("[~] Module %s found!", name))
+        local hModule = ffi.C.CreateToolhelp32Snapshot(0x00000008, variables.dwPID)
+        if hModule == -1 then return end
+        
+        local mEntry = ffi.new("MODULEENTRY32")
+        mEntry.dwSize = ffi.sizeof(mEntry)
+        
+        mEntry = ffi.new("MODULEENTRY32 [1]", mEntry)
+        
+        repeat
+            if ffi.string(mEntry[0].szModule) == name then
+                client.log(string.format("[~] Module %s found!", name))
             
-    			ffi.C.CloseHandle(hModule)
-            
-    			return ffi.cast("DWORD", mEntry[0].modBaseAddr)
-    		end
-    	until not ffi.C.Module32Next(hModule, mEntry)
-    
-    	ffi.C.CloseHandle(hModule)
-    
-    	client.log(string.format("[-] Oops! Module %s not found!", name))
-    
-    	return 0
+                ffi.C.CloseHandle(hModule)
+                
+                return ffi.cast("DWORD", mEntry[0].modBaseAddr)
+            end
+        until not ffi.C.Module32Next(hModule, mEntry)
+        
+        ffi.C.CloseHandle(hModule)
+        
+        client.log(string.format("[-] Oops! Module %s not found!", name))
+        
+        return 0
     end
-
+    
     proc.find_process = function(name)
-    	local hPID = ffi.C.CreateToolhelp32Snapshot(0x00000002, 0)
-    	if hPID == -1 then return end
-
-    	local PROCESSENTRY32 = ffi.new("PROCESSENTRY32")
-    	PROCESSENTRY32.dwSize = ffi.sizeof(PROCESSENTRY32)
-
-    	PROCESSENTRY32 = ffi.new("PROCESSENTRY32 [1]", PROCESSENTRY32)
-
-    	repeat
-    		if ffi.string(PROCESSENTRY32[0].szExeFile) == name then
-    			client.log(string.format("[~] Process %s found!", name))
-            
-    			variables.dwPID = PROCESSENTRY32[0].th32ProcessID
-            
-    			ffi.C.CloseHandle(hPID)
-            
-    			variables.hProcess = ffi.C.OpenProcess(2035711, false, variables.dwPID)
-    			return 
-    		end
-    	until not ffi.C.Process32Next(hPID, PROCESSENTRY32)
-
-    	client.log(string.format("[-] Oops! Process %s not found!", name))
-
-    	ffi.C.CloseHandle(hPID)
+        local hPID = ffi.C.CreateToolhelp32Snapshot(0x00000002, 0)
+        if hPID == -1 then return end
     
-    	return
+        local PROCESSENTRY32 = ffi.new("PROCESSENTRY32")
+        PROCESSENTRY32.dwSize = ffi.sizeof(PROCESSENTRY32)
+    
+        PROCESSENTRY32 = ffi.new("PROCESSENTRY32 [1]", PROCESSENTRY32)
+    
+        repeat
+            if ffi.string(PROCESSENTRY32[0].szExeFile) == name then
+                client.log(string.format("[~] Process %s found!", name))
+                
+                variables.dwPID = PROCESSENTRY32[0].th32ProcessID
+                
+                ffi.C.CloseHandle(hPID)
+                
+                variables.hProcess = ffi.C.OpenProcess(2035711, false, variables.dwPID)
+                return 
+            end
+        until not ffi.C.Process32Next(hPID, PROCESSENTRY32)
+    
+        client.log(string.format("[-] Oops! Process %s not found!", name))
+    
+        ffi.C.CloseHandle(hPID)
+        
+        return
     end
-
+    
     ------
-
+    
     proc.readmemory = function(t, offset, add)
-    	if add ~= nil then
-    		offset = ffi.cast("PVOID", offset + add)
-    	else
-    		offset = ffi.cast("PVOID", offset)
-    	end
-
-    	local buff = ffi.new(t .. "[1]")
-
-    	ffi.C.ReadProcessMemory(variables.hProcess, offset, buff, ffi.sizeof(buff), nil)
+        if add ~= nil then
+            offset = ffi.cast("PVOID", offset + add)
+        else
+            offset = ffi.cast("PVOID", offset)
+        end
     
-    	return buff[0]
+        local buff = ffi.new(t .. "[1]")
+    
+        ffi.C.ReadProcessMemory(variables.hProcess, offset, buff, ffi.sizeof(buff), nil)
+        
+        return buff[0]
     end
-
+    
     ------
-
-    proc.writememory = function(t, offset, add, value)
-    	if variables.dwPID < 1 then
-    		return "ахуел" end
-
-    	if add ~= nil then
-    		offset = ffi.cast("PVOID", offset + add)
-    	else
-    		offset = ffi.cast("PVOID", offset)
-    	end
-
-    	local buff = ffi.new(t .. "[1]", ffi.new(t, value))
-
-    	ffi.C.ReadProcessMemory(variables.hProcess, offset, buff, ffi.sizeof(buff), nil)
     
-    	return buff[0]
+    proc.writememory = function(t, offset, add, value)
+        if variables.dwPID < 1 then
+            return "ахуел" end
+    
+        if add ~= nil then
+            offset = ffi.cast("PVOID", offset + add)
+        else
+            offset = ffi.cast("PVOID", offset)
+        end
+    
+        local buff = ffi.new(t .. "[1]", ffi.new(t, value))
+    
+        ffi.C.ReadProcessMemory(variables.hProcess, offset, buff, ffi.sizeof(buff), nil)
+        
+        return buff[0]
     end
-
+    
     return proc
 end
 
@@ -391,16 +465,6 @@ local gdi = ffi.load 'Gdi32'
 local g_VGuiSurface = ffi.cast(ffi.typeof("void***"), utils.create_interface("vguimatsurface.dll", "VGUI_Surface031"))
 local native_Surface_DrawSetColor = ffi.cast(ffi.typeof("void(__thiscall*)(void*, int, int, int, int)"), g_VGuiSurface[0][15])
 local native_Surface_DrawFilledRectFade = ffi.cast(ffi.typeof("void(__thiscall*)(void*, int, int, int, int, unsigned int, unsigned int, bool)"), g_VGuiSurface[0][123])
-
-GradientRect = function(x, y, w, h, color, color2, horizontal)
-    local r0, g0, b0, a0 = color:r(), color:g(), color:b(), color:a()
-    local r1, g1, b1, a1 = color2:r(), color2:g(), color2:b(), color2:a()
-
-    native_Surface_DrawSetColor(g_VGuiSurface,r0, g0, b0, a0)
-    native_Surface_DrawFilledRectFade(g_VGuiSurface,x, y, x + w, y + h, 255, 0, horizontal)
-    native_Surface_DrawSetColor(g_VGuiSurface,r1, g1, b1, a1)
-    return native_Surface_DrawFilledRectFade(g_VGuiSurface,x, y, x + w, y + h, 0, 255, horizontal)
-end
 
 local ffi_helpers = {
     color_print_fn = ffi.cast("console_color_print", ffi.C.GetProcAddress(ffi.C.GetModuleHandleA("tier0.dll"), "?ConColorMsg@@YAXABVColor@@PBDZZ")),
@@ -424,8 +488,53 @@ local FindHudElement = function(name)
     return find_hud_element(pThis, name)
 end
 
-ffi.C.CreateDirectoryA('C:\\BetterAPI', NULL)
+local fn_change_clantag = utils.find_signature("engine.dll", "53 56 57 8B DA 8B F9 FF 15")
+local set_clantag = ffi.cast("clantag_t", fn_change_clantag)
 
+local ModelInfo = ffi.cast(ffi.typeof("void***"), utils.create_interface("engine.dll", "VModelInfoClient004"))
+local GetStudioModel = ffi.cast(ffi.typeof("studiohdr_t*(__thiscall*)(void*, model_t*)"), ModelInfo[0][32])
+
+local IClientEntityList = ffi.cast(ffi.typeof("void***"), utils.create_interface("client.dll", "VClientEntityList003"))
+local GetHighestEntityIndex = ffi.cast(ffi.typeof("int(__thiscall*)(void*)"), IClientEntityList[0][6])
+local GetClientEntity = ffi.cast(ffi.typeof("unsigned long(__thiscall*)(void*, int)"), IClientEntityList[0][3])
+
+local Typeof_tbl = {
+    ClientRenderable = ffi.typeof("void***"),
+    GetModel = ffi.typeof("model_t*(__thiscall*)(void*)"),
+    SetupBones = ffi.typeof("bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)")
+}
+
+local ClientRenderable_tbl = {}
+
+function vector:add(a)
+    return vector.new(self.x + a.x, self.y + a.y, self.z + a.z)
+  end
+  
+function vector:divide(a)
+  return vector.new(self.x / a, self.y / a, self.z / a)
+end
+
+local pHitboxSet = function(i, stdmdl)
+    if i < 0 or i > stdmdl.numhitboxsets then return nil end
+    return ffi.cast("mstudiohitboxset_t*", ffi.cast("byte*", stdmdl) + stdmdl.hitboxsetindex) + i
+end
+  
+local pHitbox = function(i, stdmdl)
+  if i > stdmdl.numhitboxes then return nil end
+  return ffi.cast("mstudiobbox_t*", ffi.cast("byte*", stdmdl) + stdmdl.hitboxindex) + i
+end
+  
+local DotProduct = function(a, b)
+  return a.x * b.x + a.y * b.y + a.z * b.z
+end
+  
+local VectorTransform = function(in1, in2)
+  return vector.new(
+      DotProduct(in1, vector.new(in2[0][0], in2[0][1], in2[0][2])) + in2[0][3],
+      DotProduct(in1, vector.new(in2[1][0], in2[1][1], in2[1][2])) + in2[1][3],
+      DotProduct(in1, vector.new(in2[2][0], in2[2][1], in2[2][2])) + in2[2][3]
+  )
+end
 
 fs = {}
 misc = {}
@@ -499,11 +608,24 @@ sengine.chatprint = function(text)
     print(CHudChat_vtbl, 0, 0, text)
 end
 
+sengine.set_clantag = function(clantag)
+    return set_clantag(clantag, clantag)
+end
+
 --- SOURCE ENGINE END ---
 
 --- DRAW START ---
 
-draw.gradientrect = GradientRect
+draw.gradientrect = function(x, y, w, h, color, color2, horizontal)
+    local r0, g0, b0, a0 = color:r(), color:g(), color:b(), color:a()
+    local r1, g1, b1, a1 = color2:r(), color2:g(), color2:b(), color2:a()
+
+    native_Surface_DrawSetColor(g_VGuiSurface,r0, g0, b0, a0)
+    native_Surface_DrawFilledRectFade(g_VGuiSurface,x, y, x + w, y + h, 255, 0, horizontal)
+    native_Surface_DrawSetColor(g_VGuiSurface,r1, g1, b1, a1)
+    return native_Surface_DrawFilledRectFade(g_VGuiSurface,x, y, x + w, y + h, 0, 255, horizontal)
+end
+
 
 --- DRAW END ---
 
@@ -538,4 +660,70 @@ entlist.get_players = function(num) -- 0 - enemies only, 1 - teammates only, 2 -
     return players
 end
 
+entlist.find_by_class = function(class)
+    for i=64, GetHighestEntityIndex(IClientEntityList) do
+        local ent = entitylist.get_player_by_index(i)
+        
+        if ent ~= nil then
+            if ent:get_class_name() == class then
+                return ent
+            end
+        end
+    end
+end
+
+entlist.get_player_resource = function()
+    return entlist.find_by_class('CCSPlayerResource')
+end
+
 --- ENTITY LIST END ---
+
+--- PLAYER START ---
+
+function player:is_alive()
+    if not self then return false end
+    return self:get_health() > 0
+end
+
+function player:gethitboxpos(hitbox_id)
+    local hitbox_id = hitbox_id or 0
+    if not self or not self:is_alive() then return end
+
+    local index = self:get_index()
+
+    local matrix = ffi.new('matrix3x4_t[128]')
+    if ClientRenderable_tbl[index] == nil then
+        ClientRenderable_tbl[index] = {}
+        ClientRenderable_tbl[index].ClientRenderable = ffi.cast(Typeof_tbl.ClientRenderable, GetClientEntity(IClientEntityList, index) + 0x4)
+        ClientRenderable_tbl[index].GetModel = ffi.cast(Typeof_tbl.GetModel, ClientRenderable_tbl[index].ClientRenderable[0][8])
+        ClientRenderable_tbl[index].SetupBones = ffi.cast(Typeof_tbl.SetupBones, ClientRenderable_tbl[index].ClientRenderable[0][13])
+    end
+    local sbool = ClientRenderable_tbl[index].SetupBones(ClientRenderable_tbl[index].ClientRenderable, matrix, 128, 0x0007FF00, globals.get_curtime())
+    if not matrix or not sbool then return end
+
+    local model = ClientRenderable_tbl[index].GetModel(ClientRenderable_tbl[index].ClientRenderable)
+
+    if not model then return end
+
+    local studio_model = GetStudioModel(ModelInfo, model)
+
+    if not studio_model then return end
+
+    local set = pHitboxSet( 0, studio_model)
+
+    if not set then return end
+
+    local hitbox = pHitbox(hitbox_id, set)
+
+    if not hitbox then return end
+    local mins = VectorTransform(hitbox.m_mins, matrix[hitbox.m_bone].m_flMatVal)
+    local maxs = VectorTransform(hitbox.m_maxs, matrix[hitbox.m_bone].m_flMatVal)
+
+    return mins:add(maxs):divide(2)
+end
+
+events.register_event( 'round_start', function() 
+    ClientRenderable_tbl = {}
+end)
+
+--- PLAYER END ---

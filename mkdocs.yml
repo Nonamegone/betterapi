@@ -9,6 +9,8 @@ theme:
     scheme: slate
     primary: deep purple
     accent: deep purple
+plugins:
+  - search
 copyright: Made by Nonamegone
 repo_url: https://github.com/Nonamegone/betterapi
 repo_name: BetterAPI

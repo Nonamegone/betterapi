@@ -12,7 +12,5 @@ Download to this directory `%appdata%/Legendware/scripts` or to `Steam/steamapps
     ```
 
 
-[Download :fontawesome-solid-download:](https://github.com/Nonamegone/betterapi/blob/master/betterapi.lua){ .md-button .md-button--primary }
-
-
-
+[Download :fontawesome-solid-download:](https://downgit.github.io/#/home?url=https://github.com/Nonamegone/betterapi/blob/master/betterapi.lua){ .md-button .md-button--primary }
+[Source :fontawesome-solid-copy:](https://github.com/Nonamegone/betterapi/blob/master/betterapi.lua){ .md-button .md-button--primary }

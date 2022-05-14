@@ -14,7 +14,7 @@
     
     
       
-        <title>Source engine - BetterAPI</title>
+        <title>Enums - BetterAPI</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sengine" class="md-skip">
+        <a href="#efontflags" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Source engine
+              Enums
             
           </span>
         </div>
@@ -232,12 +232,10 @@
         
   
   
-    
-  
 
 
   <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
+    <a href="../sengine/" class="md-tabs__link">
       Source engine
     </a>
   </li>
@@ -298,10 +296,12 @@
         
   
   
+    
+  
 
 
   <li class="md-tabs__item">
-    <a href="../enums/" class="md-tabs__link">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
       Enums
     </a>
   </li>
@@ -446,60 +446,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Source engine
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../sengine/" class="md-nav__link">
         Source engine
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#senginecolorprintcolor-text" class="md-nav__link">
-    sengine.colorprint(color, text)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#senginechatprinttext" class="md-nav__link">
-    sengine.chatprint(text)
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -603,11 +554,49 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../enums/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Enums
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Enums
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#efontflags" class="md-nav__link">
+    EFontFlags
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -639,56 +628,29 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/Nonamegone/betterapi/edit/master/docs/sengine.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/Nonamegone/betterapi/edit/master/docs/enums.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="sengine">sengine</h1>
-<h2 id="senginecolorprintcolor-text">sengine.colorprint(color, text)</h2>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>color</code></td>
-<td><code>color</code></td>
-<td>Color to print</td>
-</tr>
-<tr>
-<td><code>text</code></td>
-<td><code>String</code></td>
-<td>Text to print</td>
-</tr>
-</tbody>
-</table>
+                  <h1>Enums</h1>
+                
+                <h2 id="efontflags">EFontFlags</h2>
+<div class="highlight"><pre><span></span><code>NONE       
+ITALIC       
+UNDERLINE    
+STRIKEOUT    
+SYMBOL       
+ANTIALIAS    
+GAUSSIANBLUR 
+ROTARY       
+DROPSHADOW   
+ADDITIVE     
+OUTLINE      
+CUSTOM
+</code></pre></div>
 <p>Example:
-    <div class="highlight"><pre><span></span><code><span class="n">sengine</span><span class="p">.</span><span class="n">colorprint</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> <span class="s1">&#39;Hello world!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-</code></pre></div></p>
-<h2 id="senginechatprinttext">sengine.chatprint(text)</h2>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>text</code></td>
-<td><code>String</code></td>
-<td>Text to print</td>
-</tr>
-</tbody>
-</table>
-<p>Example:
-    <div class="highlight"><pre><span></span><code><span class="n">sengine</span><span class="p">.</span><span class="n">chatprint</span><span class="p">(</span><span class="s1">&#39;Ah shit, here we go again&#39;</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">font</span> <span class="o">=</span> <span class="n">draw</span><span class="p">.</span><span class="n">init_font</span><span class="p">(</span><span class="s1">&#39;Verdana&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span><span class="n">EFontFlags</span><span class="p">(</span><span class="s1">&#39;DROPSHADOW&#39;</span><span class="p">)})</span>
 </code></pre></div></p>
                 
               
@@ -714,7 +676,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../entlist/" class="md-footer__link md-footer__link--prev" aria-label="Previous: EntityList" rel="prev">
+        <a href="../classes/player/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Player" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -723,20 +685,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              EntityList
+              Player
             </div>
           </div>
         </a>
       
       
         
-        <a href="../memory/" class="md-footer__link md-footer__link--next" aria-label="Next: Memory" rel="next">
+        <a href="../examples/" class="md-footer__link md-footer__link--next" aria-label="Next: Example" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Memory
+              Example
             </div>
           </div>
           <div class="md-footer__button md-icon">

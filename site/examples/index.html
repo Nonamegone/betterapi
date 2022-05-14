@@ -164,6 +164,165 @@
       
         
           
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href=".." class="md-tabs__link">
+      Introduction
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../fs/" class="md-tabs__link">
+      File system
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../input/" class="md-tabs__link">
+      Input
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../draw/" class="md-tabs__link">
+      Draw
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../entlist/" class="md-tabs__link">
+      EntityList
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../sengine/" class="md-tabs__link">
+      Source engine
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../memory/" class="md-tabs__link">
+      Memory
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../panorama/" class="md-tabs__link">
+      Panorama
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../misc/" class="md-tabs__link">
+      Misc
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../classes/player/" class="md-tabs__link">
+        Classes
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../enums/" class="md-tabs__link">
+      Enums
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      Example
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -176,8 +335,12 @@
                   <div class="md-sidebar__inner">
                     
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="BetterAPI" class="md-nav__button md-logo" aria-label="BetterAPI" data-md-component="logo">
       
@@ -271,7 +434,7 @@
   
     <li class="md-nav__item">
       <a href="../entlist/" class="md-nav__link">
-        Entity list
+        EntityList
       </a>
     </li>
   
@@ -391,6 +554,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../enums/" class="md-nav__link">
+        Enums
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -417,25 +595,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -447,10 +606,49 @@
                 
                 
                 <h1 id="examples-with-betterapi">Examples with BetterAPI</h1>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Info</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Clip</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>--TODO</p>
+<div class="highlight"><pre><span></span><code><span class="nb">require</span><span class="p">(</span><span class="s1">&#39;betterapi&#39;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">font</span> <span class="o">=</span> <span class="n">draw</span><span class="p">.</span><span class="n">init_font</span><span class="p">(</span><span class="s1">&#39;Verdana&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span><span class="n">EFontFlags</span><span class="p">(</span><span class="s1">&#39;DROPSHADOW&#39;</span><span class="p">)})</span>
+
+<span class="kd">local</span> <span class="n">triangleSize</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="kd">local</span> <span class="n">boxSize</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">200</span><span class="p">}</span>
+<span class="kd">local</span> <span class="n">drag</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">}</span>
+<span class="kd">local</span> <span class="n">drug</span> <span class="o">=</span> <span class="kc">false</span>
+
+<span class="kd">local</span> <span class="n">inBox</span> <span class="o">=</span> <span class="kr">function</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">x1</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span> <span class="ow">and</span> <span class="n">y1</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="ow">and</span> <span class="n">y1</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span>
+<span class="kr">end</span>
+
+<span class="n">client</span><span class="p">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s1">&#39;on_paint&#39;</span><span class="p">,</span> <span class="kr">function</span> <span class="p">()</span>
+    <span class="kd">local</span> <span class="n">cpos</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">getcursorpos</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">boxX</span> <span class="o">=</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">triangleSize</span>
+    <span class="kd">local</span> <span class="n">boxY</span> <span class="o">=</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">triangleSize</span>
+    <span class="kd">local</span> <span class="n">cond</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">keystate</span><span class="p">(</span><span class="mh">0x01</span><span class="p">)</span> <span class="ow">and</span> <span class="n">inBox</span><span class="p">(</span><span class="n">boxX</span><span class="p">,</span> <span class="n">boxY</span><span class="p">,</span> <span class="n">triangleSize</span><span class="p">,</span> <span class="n">triangleSize</span><span class="p">,</span> <span class="n">cpos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cpos</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="ow">not</span> <span class="n">drug</span> <span class="ow">and</span> <span class="n">cond</span> <span class="kr">then</span>
+        <span class="n">drug</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="n">drag</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">boxX</span> <span class="o">-</span> <span class="n">cpos</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">triangleSize</span>
+        <span class="n">drag</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">boxY</span> <span class="o">-</span> <span class="n">cpos</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">triangleSize</span>
+    <span class="kr">end</span>
+
+    <span class="kr">if</span> <span class="n">drug</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">input</span><span class="p">.</span><span class="n">keystate</span><span class="p">(</span><span class="mh">0x01</span><span class="p">)</span> <span class="kr">then</span>
+        <span class="n">drug</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="kr">end</span>
+
+    <span class="kr">if</span> <span class="n">drug</span> <span class="kr">then</span>
+        <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span> <span class="o">=</span> <span class="nb">math.max</span><span class="p">((</span><span class="n">drag</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">cpos</span><span class="p">.</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="nb">math.max</span><span class="p">((</span><span class="n">drag</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">cpos</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="kr">end</span>
+
+    <span class="n">draw</span><span class="p">.</span><span class="n">filled_rect</span><span class="p">(</span><span class="n">boxSize</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">vertices</span> <span class="o">=</span> <span class="p">{</span><span class="n">vec2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">boxSize</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span><span class="p">),</span> <span class="n">vec2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">boxSize</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">triangleSize</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span><span class="p">),</span> <span class="n">vec2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">boxSize</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span>   <span class="n">boxSize</span><span class="p">.</span><span class="n">w</span><span class="p">,</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">triangleSize</span><span class="p">)}</span>
+    <span class="n">draw</span><span class="p">.</span><span class="n">set_clip</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="n">boxSize</span><span class="p">.</span><span class="n">w</span><span class="p">,</span><span class="n">boxSize</span><span class="p">.</span><span class="n">h</span><span class="p">)</span>
+    <span class="n">draw</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span> <span class="s1">&#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.     Convallis posuere morbi leo urna molestie at. Odio eu feugiat pretium nibh ipsum consequat nisl. Eu facilisis sed odio morbi quis commodo. Ipsum dolor sit amet consectetur     adipiscing elit pellentesque habitant. Felis eget nunc lobortis mattis aliquam. Hac habitasse platea dictumst quisque sagittis purus sit amet volutpat. Libero enim sed     faucibus turpis in eu. Eu lobortis elementum nibh tellus. Eu ultrices vitae auctor eu. Eu augue ut lectus arcu bibendum at varius vel.&#39;</span><span class="p">)</span>
+    <span class="n">draw</span><span class="p">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+    <span class="n">draw</span><span class="p">.</span><span class="n">end_clip</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
 </div>
 </div>
 </div>
@@ -465,6 +663,11 @@
           </div>
         </div>
         
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
       </main>
       
         
@@ -473,7 +676,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../classes/player/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Player" rel="prev">
+        <a href="../enums/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Enums" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -482,7 +685,7 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Player
+              Enums
             </div>
           </div>
         </a>
@@ -515,7 +718,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "toc.integrate", "navigation.top", "navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.b1047164.min.js"></script>

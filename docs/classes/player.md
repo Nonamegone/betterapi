@@ -1,3 +1,5 @@
+# player
+
 ## player:is_alive()
 
 |  Return Value    |
@@ -19,7 +21,7 @@ Example:
 
 |  Return Value    |
 | ---------------- |
-| vector position  |
+| `vector` position  |
 
 Example:
     ```lua

@@ -1,3 +1,5 @@
+# input
+
 ## input.keystate(code)
 
 | Variable      | Type     |  Description   |
@@ -6,7 +8,7 @@
 
 |  Return Value |
 | ------------- |
-| true or false |
+| `true` or `false` |
 
 ??? tip
     You can see all keycodes [here](https://docs.microsoft.com/ru-ru/windows/win32/inputdev/virtual-key-codes)

@@ -9,6 +9,11 @@ theme:
     scheme: slate
     primary: deep purple
     accent: deep purple
+  features:
+    - navigation.instant
+    - toc.integrate
+    - navigation.top
+    - navigation.tabs
 plugins:
   - search
 copyright: Made by Nonamegone
@@ -27,6 +32,7 @@ markdown_extensions:
   - pymdownx.snippets
   - tables
   - attr_list
+  - def_list
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -35,11 +41,13 @@ nav:
   - File system: fs.md
   - Input: input.md
   - Draw: draw.md
-  - Entity list: entlist.md
+  - EntityList: entlist.md
   - Source engine: sengine.md
   - Memory: memory.md
   - Panorama: panorama.md
   - Misc: misc.md
   - Classes:
     - Player: classes/player.md
+  #  - Entity: classes/entity.md
+  - Enums: enums.md
   - Example: examples.md

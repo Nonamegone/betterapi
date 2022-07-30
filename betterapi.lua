@@ -919,7 +919,7 @@ draw.polyline = function(vertices, clr)
     native_Surface.DrawTexturedPolyLine(buf, numvert)
 end
 
-draw.circle = function(pos, radius, color, start_angle, end_angle)
+draw.circle = function(x, y, radius, color, filled, start_angle, end_angle)
     local start_angle = start_angle or 0
     local end_angle = end_angle or 360
     local vertices = {}
@@ -930,8 +930,8 @@ draw.circle = function(pos, radius, color, start_angle, end_angle)
     for i = start_angle, end_angle, step do
         local i_rad = math.rad(i)
         local point = vec2.new(
-            pos.x + math.cos(i_rad) * radius,
-            pos.y + math.sin(i_rad) * radius
+            x + math.cos(i_rad) * radius,
+            y + math.sin(i_rad) * radius
         )
         vertices[#vertices+1] = point
     end
@@ -939,6 +939,9 @@ draw.circle = function(pos, radius, color, start_angle, end_angle)
     for i = #vertices, 1, -1 do
         vertices[#vertices+1] = vertices[i]
     end 
+    if filled then
+        return draw.polygon(vertices, true, color)
+    end
     draw.polyline(vertices, color)
 end
 

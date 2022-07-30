@@ -69,6 +69,24 @@ Example:
     end)    
     ```
 
+## draw.circle(x, y, radius, color, filled, start_angle, end_angle)
+| Variable      | Type     | Info   |
+| ------------- | -------- | -------|
+| `x`        | `Number` | |
+| `y`        | `Number` | |
+| `radius`        | `Number` | |
+| `color`        | `color_t` | |
+| `filled`        | `Boolean` | default = false |
+| `start_angle`        | `Number` | default = 0 |
+| `end_angle`        | `Number` | default = 360 |
+
+Example:
+    ```lua
+    client.add_callback('on_paint', function()
+        draw.circle(100, 100, 5, color_t.new(255,255,255,255), true)
+    end)    
+    ```
+
 
 ## draw.gradientrect(x, y, w, h, clr, clr2, horizontal)
 

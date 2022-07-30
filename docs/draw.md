@@ -17,17 +17,14 @@ Example:
     end)    
     ```
 
-## draw.line(x0, y0, x1, y1, r, g, b, a)
+## draw.line(x0, y0, x1, y1, clr)
 | Variable      | Type     |
 | ------------- | -------- |
 | `x`        | `Number` |
 | `y`        | `Number` |
 | `x1`        | `Number` |
 | `y1`        | `Number` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
 
 Example:
     ```lua
@@ -37,47 +34,43 @@ Example:
     ```
 
 
-## draw.rect(x, y, w, h, r, g, b, a)
+## draw.rect(x, y, w, h, clr, rounding)
 | Variable      | Type     |
 | ------------- | -------- |
 | `x`        | `Number` |
 | `y`        | `Number` |
 | `w`        | `Number` |
 | `h`        | `Number` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
+| `rounding`        | `Number` |
 
 Example:
     ```lua
     client.add_callback('on_paint', function()
-        draw.rect(100, 150, 100, 100, 255,255,255,255)
+        draw.rect(100, 150, 100, 100, color_t.new(255,255,255,255), 5)
     end)    
     ```
 
 
-## draw.filled_rect(x, y, w, h, r, g, b, a)
+## draw.filled_rect(x, y, w, h, clr, rounding)
 | Variable      | Type     |
 | ------------- | -------- |
 | `x`        | `Number` |
 | `y`        | `Number` |
 | `w`        | `Number` |
 | `h`        | `Number` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
+| `rounding`        | `Number` |
 
 Example:
     ```lua
     client.add_callback('on_paint', function()
-        draw.filled_rect(100, 150, 100, 100, 255,255,255,255)
+        draw.filled_rect(100, 150, 100, 100, color_t.new(255,255,255,255), 5)
     end)    
     ```
 
 
-## draw.gradientrect(x, y, w, h, r0, g0, b0, a0, r1, g1, b1, a1, horizontal)
+## draw.gradientrect(x, y, w, h, clr, clr2, horizontal)
 
 | Variable      | Type     |
 | ------------- | -------- |
@@ -85,56 +78,44 @@ Example:
 | `y`        | `Number` |
 | `w`        | `Number` |
 | `h`        | `Number` |
-| `r0`        | `Number` |
-| `g0`        | `Number` |
-| `b0`        | `Number` |
-| `a0`        | `Number` |
-| `r1`        | `Number` |
-| `g1`        | `Number` |
-| `b1`        | `Number` |
-| `a1`        | `Number` |
+| `clr`        | `color_t` |
+| `clr2`        | `color_t` |
 | `horizontal`| `Boolean` |
 
 Example:
     ```lua
     client.add_callback('on_paint', function()
-        draw.gradientrect(100, 100, 150, 20, color.new(255,255,255), color.new(0,0,0), true)
+        draw.gradientrect(100, 100, 150, 20, color_t.new(255,255,255), color_t.new(0,0,0), true)
     end)
     ```
 
-## draw.polygon(vertices, clipvertices, r, g, b, a)
+## draw.polygon(vertices, clipvertices, clr)
 | Variable      | Type     |
 | ------------- | -------- |
 | `vertices`    | `vec2 Table` |
 | `clipvertices`| `Boolean` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
 
 Example:
     ```lua
     local vertices = {vec2.new(100,150), vec2.new(110,150), vec2.new(100,150)} -- up to infinite
     client.add_callback('on_paint', function()
-        draw.polygon(vertices, false, 255,255,255,255)
+        draw.polygon(vertices, false, color_t.new(255,255,255,255))
     end)    
     ```
 
 
-## draw.polyline(vertices, r, g, b, a)
+## draw.polyline(vertices, clr)
 | Variable      | Type     |
 | ------------- | -------- |
 | `vertices`    | `vec2 Table` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
 
 Example:
     ```lua
     local vertices = {vec2.new(100,150), vec2.new(110,150), vec2.new(100,150)} -- up to infinite
     client.add_callback('on_paint', function()
-        draw.polyline(vertices, 255,255,255,255)
+        draw.polyline(vertices, color_t.new(255,255,255,255))
     end)    
     ```
 
@@ -159,7 +140,7 @@ Example:
 | font id  |
 
 ??? tip
-    You can see all flags [here](.\)
+    You can see all flags [here](../enums/)
 
 Example:
     ```lua
@@ -183,14 +164,11 @@ Example:
     print(tostring(size.y))  
     ```
 
-## draw.text(font, x, y, r, g, b, a, text)
+## draw.text(font, x, y, clr, text)
 | Variable      | Type     |
 | ------------- | -------- |
 | `font`        | `Number` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
 | `text`        | `String` |
 
 Example:
@@ -201,14 +179,11 @@ Example:
     ```
 
 
-## draw.text_centered(font, x, y, r, g, b, a, text, centered_x, centered_y)
+## draw.text_centered(font, x, y, clr, text, centered_x, centered_y)
 | Variable      | Type     |
 | ------------- | -------- |
 | `font`        | `Number` |
-| `r`        | `Number` |
-| `g`        | `Number` |
-| `b`        | `Number` |
-| `a`        | `Number` |
+| `clr`        | `color_t` |
 | `text`        | `String` |
 | `centered_x`| `Boolean` |
 | `centered_y`| `Boolean` |

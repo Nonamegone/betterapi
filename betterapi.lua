@@ -498,9 +498,27 @@ local new_int = ffi.typeof('int')
 local new_widebuffer = ffi.typeof("wchar_t[?]")
 
 vec2 = {}
+
 vec2.new = function(x,y)
-    return ffi.new(new_vec2, {x,y})
+    return new_vec2({x,y})
 end
+
+ffi.metatype("vec2_t", {__index = vec2})
+
+ffi.metatype('color_struct_t', {__index = {
+    amod = function (self, alpha) -- fast alpha modifier
+        return color_t.new(self.r, self.g, self.b, self.a * alpha)
+    end
+}})
+
+color_t = {
+    new = function (r,g,b,a)
+        return ffi.new('color_struct_t', {r or 255,g or 255,b or 255,a or 255})
+    end
+}
+
+local release_keycache = {}
+local press_keycache = {}
 
 local native_Surface, Cast_m_bClippingEnabled, clipCache, PrintText, font_cache, ConvertAnsiToUnicode = (function()
     local RawLocalize = utils.create_interface('localize.dll', 'Localize_001')
@@ -513,7 +531,7 @@ local native_Surface, Cast_m_bClippingEnabled, clipCache, PrintText, font_cache,
     local VGUI_Surface031 = utils.create_interface("vguimatsurface.dll", "VGUI_Surface031")
     local g_VGuiSurface = ffi.cast(ffi.typeof("void***"), VGUI_Surface031)
     local native_Surface = {}
-    native_Surface.DrawSetColor = vmt_bind(g_VGuiSurface, "void(__thiscall*)(void*, int, int, int, int)", 15)
+    native_Surface.DrawSetColor = vmt_bind(g_VGuiSurface, "void(__thiscall*)(void*, color_struct_t)", 14)
     native_Surface.DrawTexturedRect = vmt_bind(g_VGuiSurface, "void(__thiscall*)(void*, int, int, int, int)", 41)
     native_Surface.DrawSetTextureRGBA = vmt_bind(g_VGuiSurface, "void(__thiscall*)(void*, int, const unsigned char*, int, int)", 37)
     native_Surface.DrawSetTexture = vmt_bind(g_VGuiSurface, "void(__thiscall*)(void*, int)", 38)
@@ -602,6 +620,51 @@ EFontFlags = ffi.typeof([[
     }
 ]])
 
+local corner_angles = {
+    {180, 270},
+    {270, 360},
+    {0, 90},
+    {90, 180}
+}
+
+local draw_RoundRect = function (x,y,w,h, clr, rounding, filled)
+    local vertices = {}
+  
+    local w,h = w - 1, h - 1
+
+    local pos = {
+        [1] = vec2.new(x + rounding, y + rounding),
+        [2] = vec2.new(x + w - rounding, y + rounding),
+        [3] = vec2.new(x + w - rounding, y + h - rounding),
+        [4] = vec2.new(x + rounding, y + h - rounding),
+    }
+    local ind = 0
+    for k,angles in pairs(corner_angles) do
+        ind = ind + 1
+        local step = angles[2] >= angles[1] and 15 or -15
+
+        for i = angles[1], angles[2], step do
+            local i_rad = math.rad(i)
+            local point = vec2.new(
+                pos[ind].x + math.cos(i_rad) * rounding,
+                pos[ind].y + math.sin(i_rad) * rounding
+            )
+            vertices[#vertices+1] = point
+        end
+    end 
+
+    if filled then
+        return draw.polygon(vertices, true, clr)
+    end
+    draw.polyline(vertices, clr)
+end
+
+math.clamp = function (min,max, val)
+    if val < min then return min end
+    if val > max then return max end
+    return val
+end
+
 local FindHudElement = function(name)
     local pThis = ffi.cast(ffi.typeof("DWORD**"), utils.find_signature("client.dll", "B9 ? ? ? ? 68 ? ? ? ? E8 ? ? ? ? 89 46 24") + 1)[0]
 
@@ -620,11 +683,34 @@ local IClientEntityList = ffi.cast(ffi.typeof("void***"), utils.create_interface
 local GetHighestEntityIndex = ffi.cast(ffi.typeof("int(__thiscall*)(void*)"), IClientEntityList[0][6])
 local GetClientEntity = ffi.cast(ffi.typeof("unsigned long(__thiscall*)(void*, int)"), IClientEntityList[0][3])
 
+classmember = function (typedef, index)
+    return {tdef = typedef, index = index}
+end
+
+ffi.class = function (ctype, values, typedef)
+    local mt = {}
+    local values = values or {}
+    local typedef = typedef or ""
+    ffi.cdef(string.format([[typedef struct {%s} %s;]], typedef, ctype))
+    for k,v in pairs(values) do
+        mt[k] = function (self, ...)
+            local vmt_table = ffi.cast("void***", self)
+            local func = ffi.cast(v.tdef,vmt_table[0][v.index])
+            return func(self, ...)
+        end
+    end
+    ffi.metatype(ctype, {__index = mt})
+end
+
+ffi.class("IClientRenderable", {
+    GetModel = classmember("model_t*(__thiscall*)(void*)", 8),
+    SetupBones = classmember("bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)", 13)
+})
+
 local Typeof_tbl = {
-    ClientRenderable = ffi.typeof("void***"),
-    GetModel = ffi.typeof("model_t*(__thiscall*)(void*)"),
-    SetupBones = ffi.typeof("bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)")
+    ClientRenderable = "IClientRenderable*"
 }
+
 
 local ClientRenderable_tbl = {}
 
@@ -715,6 +801,30 @@ input.keystate = function(code)
     end
 end
 
+input.keyrelease = function (code)
+    local state = input.keystate(code)
+    if release_keycache[code] and not state then
+        release_keycache[code] = state
+        return true
+    end
+
+    release_keycache[code] = state
+
+    return false
+end
+
+input.keypress = function (code)
+    local state = input.keystate(code)
+    if not press_keycache[code] and state then
+        press_keycache[code] = state
+        return true
+    end
+
+    press_keycache[code] = state
+
+    return false
+end
+
 --- INPUT END ---
 
 --- SOURCE ENGINE START ---
@@ -749,60 +859,87 @@ draw.end_clip = function ()
     Cast_m_bClippingEnabled[0] = false
 end
 
-draw.line = function(x0, y0, x1, y1, r, g, b, a)
-	native_Surface.DrawSetColor(r, g, b, a)
+draw.line = function(x0, y0, x1, y1, clr)
+	native_Surface.DrawSetColor(clr)
 	return native_Surface.DrawLine(x0, y0, x1, y1)
 end
 
-draw.rect = function(x, y, w, h, r, g, b, a)
-	native_Surface.DrawSetColor(r, g, b, a)
+draw.rect = function(x, y, w, h, clr, rounding)
+    local rounding = rounding or 0
+    rounding = math.clamp(0, math.min(h, w) / 2, rounding)
+    if rounding ~= 0 then
+        return draw_RoundRect(x,y,w,h, clr, rounding, false)
+    end
+	native_Surface.DrawSetColor(clr)
 	return native_Surface.DrawOutlinedRect(x, y, x + w, y + h)
 end
 
-draw.filled_rect = function(x, y, w, h, r, g, b, a)
-    native_Surface.DrawSetColor(r, g, b, a)
+draw.filled_rect = function(x, y, w, h, clr, rounding)
+    local rounding = rounding or 0
+    rounding = math.clamp(0, math.min(h, w) / 2, rounding)
+    if rounding ~= 0 then
+        return draw_RoundRect(x,y,w,h, clr, rounding, true)
+    end
+    native_Surface.DrawSetColor(clr)
     return native_Surface.DrawFilledRect(x, y, x + w, y + h)
 end
 
-draw.gradientrect = function(x, y, w, h, r0, g0, b0, a0, r1, g1, b1, a1, horizontal)
-    native_Surface.DrawSetColor(r0, g0, b0, a0)
+draw.gradientrect = function(x, y, w, h, clr, clr2, horizontal)
+    native_Surface.DrawSetColor(clr)
     native_Surface.DrawFilledRectFade(x, y, x + w, y + h, 255, 0, horizontal)
-    native_Surface.DrawSetColor(r1, g1, b1, a1)
+    native_Surface.DrawSetColor(clr2)
     return native_Surface.DrawFilledRectFade(x, y, x + w, y + h, 0, 255, horizontal)
 end
 
-draw.polygon = function(vertices, clipvertices, r, g, b, a)
-    local a = a or 255
+draw.polygon = function(vertices, clipvertices, clr)
     local numvert = #vertices
     local buf = new_vert(numvert)
     local i = 0
-    for k,v in pairs(vertices) do
-        local vec = new_vec2()
-        vec.x, vec.y = v.x, v.y
+    for k,vec in pairs(vertices) do
         buf[i].m_Position = vec
         buf[i].m_TexCoord = zerovec
         i = i + 1
     end
-    native_Surface.DrawSetColor(r, g, b, a)
+    native_Surface.DrawSetColor(clr)
     native_Surface.DrawSetTexture(-1)
     native_Surface.DrawTexturedPolygon(numvert, buf, clipvertices)
 end
 
-draw.polyline = function(vertices, r, g, b, a)
-    local a = a or 255
+draw.polyline = function(vertices, clr)
     local numvert = #vertices
     local buf = new_vert(numvert)
     local i = 0
-    for k,v in pairs(vertices) do
-        local vec = new_vec2()
-        vec.x, vec.y = v.x, v.y
+    for k,vec in pairs(vertices) do
         buf[i].m_Position = vec
         buf[i].m_TexCoord = zerovec
         i = i + 1
     end
-    native_Surface.DrawSetColor(r, g, b, a)
+    native_Surface.DrawSetColor(clr)
     native_Surface.DrawSetTexture(-1)
     native_Surface.DrawTexturedPolyLine(buf, numvert)
+end
+
+draw.circle = function(pos, radius, color, start_angle, end_angle)
+    local start_angle = start_angle or 0
+    local end_angle = end_angle or 360
+    local vertices = {}
+
+    local step = 15
+    step = end_angle >= start_angle and step or -step
+  
+    for i = start_angle, end_angle, step do
+        local i_rad = math.rad(i)
+        local point = vec2.new(
+            pos.x + math.cos(i_rad) * radius,
+            pos.y + math.sin(i_rad) * radius
+        )
+        vertices[#vertices+1] = point
+    end
+
+    for i = #vertices, 1, -1 do
+        vertices[#vertices+1] = vertices[i]
+    end 
+    draw.polyline(vertices, color)
 end
 
 draw.init_rgba = function(data, w, h)
@@ -817,7 +954,7 @@ end
 
 draw.rgba = function(datatbl, x, y, w, h, alpha)
     local tid = datatbl.tid
-    native_Surface.DrawSetColor(255,255,255,alpha)
+    native_Surface.DrawSetColor(color_t.new(255,255,255,alpha))
     native_Surface.DrawSetTexture(tid)
     --native_Surface.DrawSetTextureRGBA(g_VGuiSurface, tid, data, w, h)
     return native_Surface.DrawTexturedRect(x, y, x + w, y + h)
@@ -856,14 +993,14 @@ draw.get_textsize = function(font, text)
 	return vec2.new(tonumber(w_ptr[0]), tonumber(h_ptr[0]))
 end
 
-draw.text = function(font, x, y, r, g, b, a, text)
+draw.text = function(font, x, y, clr, text)
     native_Surface.DrawSetTextPos(x, y)
 	native_Surface.DrawSetTextFont(font)
-	native_Surface.DrawSetTextColor(r, g, b, a)
+	native_Surface.DrawSetTextColor(clr.r, clr.g, clr.b, clr.a)
     return PrintText(text, false)
 end
 
-draw.text_centered = function(font, x, y, r, g, b, a, text, centered_x, centered_y)
+draw.text_centered = function(font, x, y, clr, text, centered_x, centered_y)
 	local text_size = draw.get_textsize(font, text)
 	local x,y = x,y
 	if centered_x then
@@ -872,7 +1009,7 @@ draw.text_centered = function(font, x, y, r, g, b, a, text, centered_x, centered
 	if centered_y then
 		y = y - text_size.y / 2
 	end
-    return draw.text(font,x,y,r,g,b,a,text)
+    return draw.text(font,x,y,clr,text)
 end
 --local native_Surface_DrawSetTextureRGBA = ffi.cast(ffi.typeof("void(__thiscall*)(void*, int, const unsigned char*, int, int)"), g_VGuiSurface[0][37])
 
@@ -944,13 +1081,13 @@ function player:gethitboxpos(hitbox_id)
     if ClientRenderable_tbl[index] == nil then
         ClientRenderable_tbl[index] = {}
         ClientRenderable_tbl[index].ClientRenderable = ffi.cast(Typeof_tbl.ClientRenderable, GetClientEntity(IClientEntityList, index) + 0x4)
-        ClientRenderable_tbl[index].GetModel = ffi.cast(Typeof_tbl.GetModel, ClientRenderable_tbl[index].ClientRenderable[0][8])
-        ClientRenderable_tbl[index].SetupBones = ffi.cast(Typeof_tbl.SetupBones, ClientRenderable_tbl[index].ClientRenderable[0][13])
     end
-    local sbool = ClientRenderable_tbl[index].SetupBones(ClientRenderable_tbl[index].ClientRenderable, matrix, 128, 0x0007FF00, globals.get_curtime())
+    
+    local ClientRenderable = ClientRenderable_tbl[index].ClientRenderable
+    local sbool = ClientRenderable:SetupBones(matrix, 128, 0x0007FF00, globals.get_curtime())
     if not matrix or not sbool then return end
 
-    local model = ClientRenderable_tbl[index].GetModel(ClientRenderable_tbl[index].ClientRenderable)
+    local model = ClientRenderable:GetModel()
 
     if not model then return end
 
@@ -976,3 +1113,11 @@ events.register_event( 'round_start', function()
 end)
 
 --- PLAYER END ---
+
+--- API MODIFICATIONS START ---
+
+menu.get_color_t = function (path)
+    local clr = menu.get_color(path)
+    return color_t.new(clr:r(), clr:g(), clr:b(), clr:a())
+end
+--- API MODIFICATIONS END ---

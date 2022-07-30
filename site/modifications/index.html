@@ -13,7 +13,7 @@
     
     
       
-        <title>Input - BetterAPI</title>
+        <title>API modifications - BetterAPI</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#input" class="md-skip">
+        <a href="#api-modifications" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Input
+              API modifications
             
           </span>
         </div>
@@ -194,12 +194,10 @@
         
   
   
-    
-  
 
 
   <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
+    <a href="../input/" class="md-tabs__link">
       Input
     </a>
   </li>
@@ -308,10 +306,12 @@
         
   
   
+    
+  
 
 
   <li class="md-tabs__item">
-    <a href="../modifications/" class="md-tabs__link">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
       API modifications
     </a>
   </li>
@@ -410,59 +410,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Input
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../input/" class="md-nav__link">
         Input
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#inputkeystatecode" class="md-nav__link">
-    input.keystate(code)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inputgetcursorpos" class="md-nav__link">
-    input.getcursorpos()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -626,11 +578,59 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../modifications/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          API modifications
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         API modifications
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fficlassctype-values-typedef" class="md-nav__link">
+    ffi.class(ctype, values, typedef)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menuget_color_tpath" class="md-nav__link">
+    menu.get_color_t(path)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -662,74 +662,63 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/Nonamegone/betterapi/edit/master/docs/input.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/Nonamegone/betterapi/edit/master/docs/modifications.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-<h1 id="input">input</h1>
-<h2 id="inputkeystatecode">input.keystate(code)</h2>
+<h1 id="api-modifications">API modifications</h1>
+<h2 id="fficlassctype-values-typedef">ffi.class(ctype, values, typedef)</h2>
 <table>
 <thead>
 <tr>
 <th>Variable</th>
 <th>Type</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>code</code></td>
-<td><code>Number</code></td>
-<td>Button KeyCode</td>
+<td><code>ctype</code></td>
+<td><code>String</code></td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td><code>classmember Table</code></td>
+</tr>
+<tr>
+<td><code>typedef</code></td>
+<td><code>String</code></td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>Return Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>true</code> or <code>false</code></td>
-</tr>
-</tbody>
-</table>
-<details class="tip">
-<summary>Tip</summary>
-<p>You can see all keycodes <a href="https://docs.microsoft.com/ru-ru/windows/win32/inputdev/virtual-key-codes">here</a></p>
-</details>
 <p>Example:
-    <div class="highlight"><pre><span></span><code><span class="n">client</span><span class="p">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s1">&#39;on_paint&#39;</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
-    <span class="kr">if</span> <span class="n">input</span><span class="p">.</span><span class="n">keystate</span><span class="p">(</span><span class="mh">0x01</span><span class="p">)</span> <span class="kr">then</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;LMB pressed&#39;</span><span class="p">)</span>
-    <span class="kr">end</span>
-<span class="kr">end</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="n">ffi</span><span class="p">.</span><span class="n">class</span><span class="p">(</span><span class="s2">&quot;IClientRenderable&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">GetModel</span> <span class="o">=</span> <span class="n">classmember</span><span class="p">(</span><span class="s2">&quot;model_t*(__thiscall*)(void*)&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="n">SetupBones</span> <span class="o">=</span> <span class="n">classmember</span><span class="p">(</span><span class="s2">&quot;bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="p">})</span>
 </code></pre></div></p>
-<h2 id="inputgetcursorpos">input.getcursorpos()</h2>
+<h2 id="menuget_color_tpath">menu.get_color_t(path)</h2>
 <table>
 <thead>
 <tr>
-<th>Return Value</th>
+<th>Variable</th>
+<th>Type</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>X coordinate</td>
-</tr>
-<tr>
-<td>Y coordinate</td>
+<td><code>path</code></td>
+<td><code>String</code></td>
 </tr>
 </tbody>
 </table>
 <p>Example:
-    <div class="highlight"><pre><span></span><code><span class="n">client</span><span class="p">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s1">&#39;on_paint&#39;</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
-    <span class="kd">local</span> <span class="n">cursorpos</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">getcursorpos</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;X coordinate: &#39;</span><span class="o">..</span><span class="n">cursorpos</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Y coordinate: &#39;</span><span class="o">..</span><span class="n">cursorpos</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><code><span class="n">menu</span><span class="p">.</span><span class="n">add_color</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+
+<span class="n">client</span><span class="p">.</span><span class="n">add_callback</span><span class="p">(</span><span class="s1">&#39;on_paint&#39;</span><span class="p">,</span> <span class="kr">function</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">clr</span> <span class="o">=</span> <span class="n">menu</span><span class="p">.</span><span class="n">get_color_t</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+    <span class="n">draw</span><span class="p">.</span><span class="n">rect</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="n">clr</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="kr">end</span><span class="p">)</span>
 </code></pre></div></p>
 
@@ -752,7 +741,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../fs/" class="md-footer__link md-footer__link--prev" aria-label="Previous: File system" rel="prev">
+        <a href="../enums/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Enums" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -761,20 +750,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              File system
+              Enums
             </div>
           </div>
         </a>
       
       
         
-        <a href="../draw/" class="md-footer__link md-footer__link--next" aria-label="Next: Draw" rel="next">
+        <a href="../examples/" class="md-footer__link md-footer__link--next" aria-label="Next: Example" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Draw
+              Example
             </div>
           </div>
           <div class="md-footer__button md-icon">

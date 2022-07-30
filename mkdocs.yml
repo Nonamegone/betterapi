@@ -50,4 +50,5 @@ nav:
     - Player: classes/player.md
   #  - Entity: classes/entity.md
   - Enums: enums.md
+  - API modifications: modifications.md
   - Example: examples.md

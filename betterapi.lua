@@ -683,11 +683,11 @@ local IClientEntityList = ffi.cast(ffi.typeof("void***"), utils.create_interface
 local GetHighestEntityIndex = ffi.cast(ffi.typeof("int(__thiscall*)(void*)"), IClientEntityList[0][6])
 local GetClientEntity = ffi.cast(ffi.typeof("unsigned long(__thiscall*)(void*, int)"), IClientEntityList[0][3])
 
-classmember = function (typedef, index)
+local classmember = function (typedef, index)
     return {tdef = typedef, index = index}
 end
 
-ffi.class = function (ctype, values, typedef)
+ffi.class = function (ctype, values, typedef) -- WARNING! This function is erroring
     local mt = {}
     local values = values or {}
     local typedef = typedef or ""
@@ -695,20 +695,18 @@ ffi.class = function (ctype, values, typedef)
     for k,v in pairs(values) do
         mt[k] = function (self, ...)
             local vmt_table = ffi.cast("void***", self)
-            local func = ffi.cast(v.tdef,vmt_table[0][v.index])
+            local orig_func = vmt_table[0][v.index]
+            local func = ffi.cast(v.tdef,orig_func) -- error here
             return func(self, ...)
         end
     end
     ffi.metatype(ctype, {__index = mt})
 end
 
-ffi.class("IClientRenderable", {
-    GetModel = classmember("model_t*(__thiscall*)(void*)", 8),
-    SetupBones = classmember("bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)", 13)
-})
-
 local Typeof_tbl = {
-    ClientRenderable = "IClientRenderable*"
+    ClientRenderable = ffi.typeof("void***"),
+    GetModel = ffi.typeof("model_t*(__thiscall*)(void*)"),
+    SetupBones = ffi.typeof("bool(__thiscall*)(void*, matrix3x4_t* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)")
 }
 
 
@@ -919,7 +917,7 @@ draw.polyline = function(vertices, clr)
     native_Surface.DrawTexturedPolyLine(buf, numvert)
 end
 
-draw.circle = function(x, y, radius, color, filled, start_angle, end_angle)
+draw.circle = function(pos, radius, color, start_angle, end_angle)
     local start_angle = start_angle or 0
     local end_angle = end_angle or 360
     local vertices = {}
@@ -930,8 +928,8 @@ draw.circle = function(x, y, radius, color, filled, start_angle, end_angle)
     for i = start_angle, end_angle, step do
         local i_rad = math.rad(i)
         local point = vec2.new(
-            x + math.cos(i_rad) * radius,
-            y + math.sin(i_rad) * radius
+            pos.x + math.cos(i_rad) * radius,
+            pos.y + math.sin(i_rad) * radius
         )
         vertices[#vertices+1] = point
     end
@@ -939,9 +937,6 @@ draw.circle = function(x, y, radius, color, filled, start_angle, end_angle)
     for i = #vertices, 1, -1 do
         vertices[#vertices+1] = vertices[i]
     end 
-    if filled then
-        return draw.polygon(vertices, true, color)
-    end
     draw.polyline(vertices, color)
 end
 
@@ -1079,18 +1074,18 @@ function player:gethitboxpos(hitbox_id)
     if not self or not self:is_alive() then return end
 
     local index = self:get_index()
-
     local matrix = ffi.new('matrix3x4_t[128]')
     if ClientRenderable_tbl[index] == nil then
         ClientRenderable_tbl[index] = {}
         ClientRenderable_tbl[index].ClientRenderable = ffi.cast(Typeof_tbl.ClientRenderable, GetClientEntity(IClientEntityList, index) + 0x4)
+        ClientRenderable_tbl[index].GetModel = ffi.cast(Typeof_tbl.GetModel, ClientRenderable_tbl[index].ClientRenderable[0][8])
+        ClientRenderable_tbl[index].SetupBones = ffi.cast(Typeof_tbl.SetupBones, ClientRenderable_tbl[index].ClientRenderable[0][13])
     end
-    
-    local ClientRenderable = ClientRenderable_tbl[index].ClientRenderable
-    local sbool = ClientRenderable:SetupBones(matrix, 128, 0x0007FF00, globals.get_curtime())
+    local ClientRenderable = ClientRenderable_tbl[index]
+    local sbool = ClientRenderable.SetupBones(ClientRenderable.ClientRenderable, matrix, 128, 0x0007FF00, globals.get_curtime())
     if not matrix or not sbool then return end
 
-    local model = ClientRenderable:GetModel()
+    local model = ClientRenderable.GetModel(ClientRenderable.ClientRenderable)
 
     if not model then return end
 
